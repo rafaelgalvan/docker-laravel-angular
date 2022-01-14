@@ -2,74 +2,103 @@ version: "3.7"
 services:
     # image project
     laravel_8:
-        build: 
-            args: 
+        build:
+            args:
                 user: rafael
                 uid: 1000
-            context: ./
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: ./backend/Dockerfile
         image: laravel-app
+        env_file:
+            -   ./backend/.env
+        container_name: laravel
         restart: unless-stopped
         working_dir: /var/www/
         volumes:
-            - ./:/var/www
-        depends_on: 
+            - ./backend/:/var/www
+        depends_on:
             - redis
             - queue
-        networks: 
+        networks:
             - laravel-eti
-   
+
+    angular_13:
+        build:
+            args:
+                user: rafael
+                uid: 1000
+            context: .
+            dockerfile: ./frontend/Dockerfile
+        container_name: angular
+        working_dir: /usr/src/app/frontend
+        volumes:
+            - ./frontend/:/usr/src/app/frontend
+        ports:
+            - "4200:4200"
+        command: >
+            bash -c "npm install && ng serve --host 0.0.0.0 --port 4200 --poll=2000"
+        networks:
+            - laravel-eti
+
     # nginx
     nginx:
         image: nginx:alpine
         restart: unless-stopped
-        ports: 
-            - 8000:80
-        volumes: 
-            - ./:/var/www
+        container_name: nginx
+        env_file:
+            - ./backend/.env
+        ports:
+            - "8000:80"
+        volumes:
+            - ./backend/:/var/www
             - ./docker/nginx/:/etc/nginx/conf.d/
-        networks: 
+        networks:
             - laravel-eti
 
     # db mysql
     mysql:
         image: mysql:5.7.22
         restart: unless-stopped
-        environment: 
-            MYSQL_DATABASE: ${DB_DATABASE}
-            MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
-            MYSQL_PASSWORD: ${DB_PASSWORD}
-            MYSQL_USER: ${DB_USERNAME}
-        volumes: 
-            - ./.docker/mysql/dbdata:/var/lib/mysql
-        ports: 
-            - 3388:3306
-        networks: 
+        container_name: mysql
+        environment:
+            MYSQL_DATABASE: laravel
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_PASSWORD: root
+            MYSQL_USER: root
+        volumes:
+            - ./.mysql/dbdata:/var/lib/mysql
+        ports:
+            - "4306:3306"
+        networks:
             - laravel-eti
 
     # queue
     queue:
-        build: 
-            args: 
+        build:
+            args:
                 user: rafael
                 uid: 1000
-            context: ./
-            dockerfile: Dockerfile
+            context: .
+            dockerfile: ./backend/Dockerfile
         restart: unless-stopped
+        container_name: queue
         command: "php artisan queue:work"
-        volumes: 
-            - ./:/var/www
-        depends_on: 
+        volumes:
+            - ./backend/:/var/www
+        depends_on:
             - redis
-        networks: 
+        networks:
             - laravel-eti
 
     # redis
     redis:
         image: redis:latest
-        networks: 
+        env_file:
+            - ./backend/.env
+        container_name: redis
+        networks:
             - laravel-eti
 
-networks: 
+networks:
     laravel-eti:
         driver: bridge
