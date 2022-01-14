@@ -1,0 +1,11 @@
+/* You can add global styles to this file, and also import other style files */
+
+th, td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.align-text-sub {
+  vertical-align: sub;
+}
+

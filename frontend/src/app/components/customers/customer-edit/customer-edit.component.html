@@ -1,0 +1,87 @@
+<ngx-spinner
+  bdColor = "rgba(0, 0, 0, 0.8)"
+  size = "medium" color = "#fff"
+  type = "ball-clip-rotate" [fullScreen] = "true">
+</ngx-spinner>
+<form>
+  <h4 class="mt-4">Personal Data</h4>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="name" class="fw-bold">Name</label>
+      <input id="name" type="text" name="name" class="form-control" [(ngModel)]="customer.name">
+    </div>
+    <div class="form-group col-md-6">
+      <label for="cpf" class="fw-bold">CPF</label>
+      <input id="cpf" type="text" name="cpf" class="form-control" [(ngModel)]="customer.cpf">
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-4">
+      <label for="email" class="fw-bold">Email</label>
+      <input id="email" type="email" name="email" class="form-control" [(ngModel)]="customer.email">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="login" class="fw-bold">Login</label>
+      <input id="login" type="text" name="login" class="form-control" [(ngModel)]="customer.login">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="password" class="fw-bold">Password</label>
+      <input id="password" type="password" name="password" class="form-control" [(ngModel)]="customer.password">
+    </div>
+  </div>
+  <h4 class="mt-4">Address</h4>
+  <div class="row">
+    <div class="form-group col-md-9">
+      <label for="street" class="fw-bold">Street</label>
+      <input type="text" class="form-control" name="street" id="street" [(ngModel)]="customer.address.street">
+    </div>
+    <div class="form-group col-md-3">
+      <label for="number" class="fw-bold">Number</label>
+      <input type="text" class="form-control" name="number" id="number" [(ngModel)]="customer.address.number">
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-md-6">
+      <label for="city" class="fw-bold">City</label>
+      <input type="text" class="form-control" name="city" id="city" [(ngModel)]="customer.address.city">
+    </div>
+    <div class="form-group col-md-4">
+      <label for="state" class="fw-bold">State</label>
+      <select id="state" class="form-control" name="state" [(ngModel)]="customer.address.state" >
+        <option selected>Choose...</option>
+        <option value="AC">Acre</option>
+        <option value="AL">Alagoas</option>
+        <option value="AP">Amapá</option>
+        <option value="AM">Amazonas</option>
+        <option value="BA">Bahia</option>
+        <option value="CE">Ceará</option>
+        <option value="DF">Distrito Federal</option>
+        <option value="ES">Espírito Santo</option>
+        <option value="GO">Goiás</option>
+        <option value="MA">Maranhão</option>
+        <option value="MT">Mato Grosso</option>
+        <option value="MS">Mato Grosso do Sul</option>
+        <option value="MG">Minas Gerais</option>
+        <option value="PA">Pará</option>
+        <option value="PB">Paraíba</option>
+        <option value="PR">Paraná</option>
+        <option value="PE">Pernambuco</option>
+        <option value="PI">Piauí</option>
+        <option value="RJ">Rio de Janeiro</option>
+        <option value="RN">Rio Grande do Norte</option>
+        <option value="RS">Rio Grande do Sul</option>
+        <option value="RO">Rondônia</option>
+        <option value="RR">Roraima</option>
+        <option value="SC">Santa Catarina</option>
+        <option value="SP">São Paulo</option>
+        <option value="SE">Sergipe</option>
+        <option value="TO">Tocantins</option>
+      </select>
+    </div>
+    <div class="form-group col-md-2">
+      <label for="zip" class="fw-bold">Zip Code</label>
+      <input type="text" class="form-control" id="zip" name="zip">
+    </div>
+  </div>
+  <button class="btn btn-dark btn-sm mt-4">Update</button>
+</form>

@@ -1,0 +1,77 @@
+<ngx-spinner
+  bdColor = "rgba(0, 0, 0, 0.8)"
+  size = "medium" color = "#fff"
+  type = "ball-clip-rotate" [fullScreen] = "true">
+</ngx-spinner>
+
+<p class="fs-5 text-muted">
+  <span class="material-icons align-text-sub">contact_page</span>
+  Personal Data
+</p>
+
+<hr>
+
+<ul class="list-group list-group-horizontal">
+  <li class="list-group-item w-50">
+    <span class="fw-bold">Name: </span>{{ employee.name }}
+  </li>
+  <li class="list-group-item w-50">
+    <span class="fw-bold">CPF: </span>{{ employee.cpf }}
+  </li>
+</ul>
+
+<p class="fs-5 mt-4 text-muted">
+  <span class="material-icons align-text-sub">home</span>
+  Address
+</p>
+
+<hr>
+
+<ul class="list-group list-group-horizontal">
+  <li class="list-group-item w-75">
+    <span class="fw-bold">Street: </span>{{ employee.address.street }}
+  </li>
+  <li class="list-group-item w-25">
+    <span class="fw-bold">Number: </span>{{ employee.address.number }}
+  </li>
+</ul>
+<ul class="list-group list-group-horizontal">
+  <li class="list-group-item w-75">
+    <span class="fw-bold">District: </span>{{ employee.address.district }}
+  </li>
+  <li class="list-group-item w-25">
+    <span class="fw-bold">State: </span>{{ employee.address.state }}
+  </li>
+  <li class="list-group-item w-50">
+    <span class="fw-bold">Zip Code: </span>
+  </li>
+</ul>
+
+<div class="row">
+  <p class="fs-5 mt-4 text-muted">
+    <span class="material-icons align-text-sub">business</span>
+    <a class="text-reset text-decoration-none m-2" href="/companies">Companies</a>
+  </p>
+  <hr>
+</div>
+
+<div class="row" *ngIf="employee.companies.length > 0; else no_companies">
+  <ul class="list-group" *ngFor="let company of employee.companies">
+    <li class="list-group-item w-50">
+      <span class="fw-bold">Name: </span>{{ company.name }}
+    </li>
+    <li class="list-group-item w-50">
+      <span class="fw-bold">CNPJ: </span>{{ company.cnpj }}
+      <button
+        type="button"
+        class="btn btn-info btn-sm float-end"
+        routerLink="/companies/detail/{{ company.id }}">
+        More Details
+      </button>
+    </li>
+  </ul>
+</div>
+
+<ng-template #no_companies>
+  <p>There are no companies associated with this employee.</p>
+</ng-template>

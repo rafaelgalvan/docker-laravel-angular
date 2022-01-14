@@ -1,0 +1,47 @@
+<ngx-spinner
+  bdColor = "rgba(0, 0, 0, 0.8)"
+  size = "medium" color = "#fff"
+  type = "ball-clip-rotate" [fullScreen] = "true">
+</ngx-spinner>
+<button type="button" class="btn btn-success btn-sm">Add Customer</button>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">#</th>
+    <th scope="col">Name</th>
+    <th scope="col">E-mail</th>
+    <th scope="col">CPF</th>
+    <th scope="col">Login</th>
+    <th scope="col">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let customer of customers">
+    <th scope="row">{{ customer.id }}</th>
+    <td>{{ customer.name }}</td>
+    <td>{{ customer.email }}</td>
+    <td>{{ customer.cpf }}</td>
+    <td>{{ customer.login }}</td>
+    <td>
+      <button
+        type="button"
+        class="btn btn-info btn-sm"
+        routerLink="detail/{{ customer.id }}">
+        See Details
+      </button>
+      <button
+        type="button"
+        class="btn btn-warning btn-sm mx-2"
+        routerLink="edit/{{ customer.id }}">
+        Edit
+      </button>
+      <button
+        type="button"
+        class="btn btn-danger btn-sm"
+        (click) = "deleteData(customer.id)">
+        Delete
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
