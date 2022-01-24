@@ -25,6 +25,8 @@ import { CustomerCreateComponent } from './components/customers/customer-create/
 import { CompanyCreateComponent } from './components/companies/company-create/company-create.component';
 import { InterceptorService } from './service/interceptor.service';
 
+export const allowedFileTypes = ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf'];
+
 const appRoutes: Routes = [
   // Employees
   { path: 'employees', component:EmployeesComponent },

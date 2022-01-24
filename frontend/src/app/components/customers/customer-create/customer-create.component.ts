@@ -6,6 +6,7 @@ import { Company } from 'src/app/models/company';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormBuilder, FormGroup, Validators } from "@angular/forms";
 import { ToastrService } from "ngx-toastr";
+import { allowedFileTypes } from "src/app/app.module";
 
 @Component({
   selector: 'app-customer-create',
@@ -108,7 +109,12 @@ export class CustomerCreateComponent implements OnInit {
   }
 
   handleFile(event: any) {
-    this.file = event.target.files[0];
+    if (allowedFileTypes.includes(event.target.files[0].type)) {
+      this.file = event.target.files[0];
+    } else {
+      this.file = undefined;
+      this.form.get('file').setValue(undefined);
+    }
   }
 
   buildCustomer() {

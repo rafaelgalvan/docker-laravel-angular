@@ -6,6 +6,7 @@ import { Company } from 'src/app/models/company';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { FormGroup, Validators, FormBuilder } from '@angular/forms';
 import { ToastrService } from "ngx-toastr";
+import {allowedFileTypes} from "../../../app.module";
 
 @Component({
   selector: 'app-employee-create',
@@ -108,7 +109,12 @@ export class EmployeeCreateComponent implements OnInit {
   }
 
   handleFile(event: any) {
-    this.file = event.target.files[0];
+    if (allowedFileTypes.includes(event.target.files[0].type)) {
+      this.file = event.target.files[0];
+    } else {
+      this.file = undefined;
+      this.form.get('file').setValue(undefined);
+    }
   }
 
   buildEmployee() {
