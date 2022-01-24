@@ -3,7 +3,12 @@
   size = "medium" color = "#fff"
   type = "ball-clip-rotate" [fullScreen] = "true">
 </ngx-spinner>
-<button type="button" class="btn btn-success btn-sm">Add Employee</button>
+<button
+  type="button"
+  class="btn btn-success btn-sm"
+  (click)="createEmployee()">
+  Add Employee
+</button>
 <table class="table">
   <thead>
     <tr>
@@ -20,7 +25,7 @@
       <th scope="row">{{ emp.id }}</th>
       <td>{{ emp.name }}</td>
       <td>{{ emp.email }}</td>
-      <td>{{ emp.cpf }}</td>
+      <td>{{ emp.cpf | mask: '000.000.000-00' }}</td>
       <td>{{ emp.login }}</td>
       <td>
         <button
@@ -45,3 +50,7 @@
     </tr>
   </tbody>
 </table>
+
+<div *ngIf="employees.length < 1;">
+  <p>There are no registered employees till this moment.</p>
+</div>

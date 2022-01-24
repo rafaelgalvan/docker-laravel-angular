@@ -3,7 +3,12 @@
   size = "medium" color = "#fff"
   type = "ball-clip-rotate" [fullScreen] = "true">
 </ngx-spinner>
-<button type="button" class="btn btn-success btn-sm">Add Company</button>
+<button
+  type="button"
+  class="btn btn-success btn-sm"
+  routerLink="create">
+  Add Company
+</button>
 <table class="table">
   <thead>
   <tr>
@@ -17,7 +22,7 @@
   <tr *ngFor="let company of companies">
     <th scope="row">{{ company.id }}</th>
     <td>{{ company.name }}</td>
-    <td>{{ company.cnpj }}</td>
+    <td>{{ company.cnpj | mask: '00.000.000/0000-00' }}</td>
     <td>
       <button
         type="button"
@@ -41,3 +46,7 @@
   </tr>
   </tbody>
 </table>
+
+<div *ngIf="companies.length < 1;">
+  <p>There are no registered companies till this moment.</p>
+</div>

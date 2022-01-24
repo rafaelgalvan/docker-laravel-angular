@@ -2,6 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { DataService } from "src/app/service/data.service";
 import { Customer } from 'src/app/models/customer';
 import { NgxSpinnerService } from 'ngx-spinner';
+import { ToastrService } from "ngx-toastr";
+import {Router} from "@angular/router";
+import {Company} from "../../models/company";
+
 
 @Component({
   selector: 'app-customers',
@@ -10,30 +14,76 @@ import { NgxSpinnerService } from 'ngx-spinner';
 })
 export class CustomersComponent implements OnInit {
   customers: Customer[] = [];
+  companies: Company[] = [];
 
   constructor(
     private dataService:DataService,
+    private toastr: ToastrService,
+    private router: Router,
     private spinner: NgxSpinnerService
   ) { }
 
   ngOnInit(): void {
+    this.getCompaniesData();
     this.getCustomersData();
   }
 
+  /**
+   * Retrieves the customers' data from the database to populate the datatable on /customers
+   */
   getCustomersData() {
     this.spinner.show();
     this.dataService.getData('customers').subscribe((res:any) => {
       this.customers = res;
+    });
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 10000);
+  }
+
+  /**
+   * Retrieves the companies' data from the database to check if we can create a new customer
+   */
+  getCompaniesData() {
+    this.spinner.show();
+    this.dataService.getData('companies').subscribe((res:any) => {
+      this.companies = res;
       this.spinner.hide();
     });
   }
 
+  /**
+   * Handle the delete request coming from the datatable on /customers
+   * @param id id of the customer
+   */
   deleteData(id: string) {
     this.spinner.show();
-    this.dataService.deleteData('customers', id).subscribe(res => {
-      console.log(res);
+    this.dataService.deleteData('customers', id).subscribe((res:any) => {
+      if (res.status === true) {
+        this.toastr.success(res.message, 'Success', {
+          timeOut: 5000,
+          closeButton: true
+        });
+        this.spinner.hide();
+      }
       this.getCustomersData();
-      this.spinner.hide();
     });
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 10000);
+  }
+
+  /**
+   * If there's at least 1 company stored, this method redirect to customer form
+   */
+  createCustomer() {
+    if (this.companies.length < 1) {
+      this.toastr.warning("Please, first include at least one company.", '', {
+        timeOut: 5000,
+        closeButton: true
+      });
+      return;
+    }
+    this.router.navigate(['/customers/create/']);
   }
 }

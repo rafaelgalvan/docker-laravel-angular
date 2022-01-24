@@ -3,7 +3,7 @@
   size = "medium" color = "#fff"
   type = "ball-clip-rotate" [fullScreen] = "true">
 </ngx-spinner>
-<form (ngSubmit)="updateEmployee()" [formGroup]="form">
+<form (ngSubmit)="insertData()" [formGroup]="form">
   <h4 class="mt-4">Personal Data</h4>
   <div formGroupName="employee">
     <div class="row mt-4">
@@ -60,6 +60,14 @@
           <div *ngIf="form.get('employee.password').hasError('maxlength')">Password must have less than 64 characters</div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="form-group col-md-6">
+    <label for="file" class="fw-bold">Upload Document</label>
+    <input type="file" formControlName="file" id="file" class="form-control"
+           (change)="handleFile($event)" [ngClass]="{ 'is-invalid': submitted && form.get('file').errors }">
+    <div class="invalid-feedback" *ngIf="submitted && form.get('file').errors">
+      <div *ngIf="form.get('file').hasError('required')">Please select a file</div>
     </div>
   </div>
   <h4 class="mt-4">Address</h4>
@@ -155,5 +163,30 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-dark btn-sm mt-4">Update</button>
+  <h4 class="mt-4">Companies</h4>
+
+  <ul class="list-group w-auto">
+    <li class="list-group-item" *ngFor="let company of companies">
+      <input
+        name="{{ company.id }}"
+        class="form-check-input me-1"
+        type="checkbox"
+        value="{{ company.id }}"
+        (click)="selectCompany(company)">
+        Nome: {{ company.name }} - CNPJ: {{ company.cnpj }}
+    </li>
+  </ul>
+
+  <button
+    type="submit"
+    class="btn btn-dark btn-sm mt-4">
+    Save
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-info btn-sm mx-2 mt-4"
+    routerLink="/employees">
+    List Employees
+  </button>
 </form>

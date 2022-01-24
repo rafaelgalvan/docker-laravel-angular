@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Employee;
+use App\Service\GenericService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -29,11 +30,33 @@ class EmployeeController extends Controller
     public function store(Request $request)
     {
         try {
-            DB::beginTransaction();
+           DB::beginTransaction();
 
-            $employee = Employee::create($request->input("employee"));
-            $employee->address()->create($request->input("address"));
-            $employee->companies()->attach($request->input("company"));
+            if ($request->getContentType() == 'form') {
+                $employee = new Employee();
+                if ($request->has('json')) {
+                    $data = json_decode($request->get('json'), true);
+                    $employee = Employee::create($data['employee']);
+                    $employee->address()->create($data['address']);
+                    $companies = $data['companies'];
+                    foreach ($companies as $company) {
+                        $employee->companies()->attach($company['id']);
+                    }
+                }
+
+                if ($request->hasFile('file')) {
+                    $fileController = new FileController();
+                    $file = $fileController->handleFile($request);
+                    $employee->file()->save($file);
+                }
+            } else {
+                $employee = Employee::create($request->input('employee'));
+                $employee->address()->create($request->input('address'));
+                $companies = $request->input('companies');
+                foreach ($companies as $company) {
+                    $employee->companies()->attach($company['id']);
+                }
+            }
 
             DB::commit();
         } catch (\Exception|\Throwable $e) {
@@ -41,7 +64,7 @@ class EmployeeController extends Controller
             return response(['message' => 'there was an error trying to save the employee.'], 500);
         }
 
-        return response($employee->load('address', 'companies'), 201);
+        return response($employee->load('address', 'companies', 'file'), 201);
     }
 
     /**
@@ -102,12 +125,13 @@ class EmployeeController extends Controller
             DB::beginTransaction();
 
             $employee = Employee::findOrFail($id);
-            $employee->companies()->detach();
-            $employee->address()->delete();
-            $employee->delete();
+            $service = New GenericService();
+            $service->delete($employee);
 
             DB::commit();
-            return response(['message' => 'employee deleted from the database'], 200);
+            return response([
+                'status' => true,
+                'message' => 'employee deleted from the database'], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $m) {
             return response(['message' => 'employee not found'], 404);
         } catch (\Exception|\Throwable $e) {

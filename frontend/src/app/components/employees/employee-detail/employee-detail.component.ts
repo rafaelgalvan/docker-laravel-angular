@@ -28,9 +28,11 @@ export class EmployeeDetailComponent implements OnInit {
     this.spinner.show();
     this.dataService.getById('employees', this.id).subscribe((res:any) => {
       this.employee = res;
-      console.log(res);
       this.spinner.hide();
-    })
+    });
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 10000);
   }
 
 }

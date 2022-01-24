@@ -16,7 +16,15 @@
     <span class="fw-bold">Name: </span>{{ customer.name }}
   </li>
   <li class="list-group-item w-50">
-    <span class="fw-bold">CPF: </span>{{ customer.cpf }}
+    <span class="fw-bold">CPF: </span>{{ customer.cpf | mask: '000.000.000-00' }}
+  </li>
+</ul>
+<ul class="list-group list-group-horizontal">
+  <li class="list-group-item w-50">
+    <span class="fw-bold">E-mail: </span>{{ customer.email }}
+  </li>
+  <li class="list-group-item w-50">
+    <span class="fw-bold">Login: </span>{{ customer.login }}
   </li>
 </ul>
 
@@ -34,21 +42,24 @@
   <li class="list-group-item w-25">
     <span class="fw-bold">Number: </span>{{ customer.address.number }}
   </li>
+  <li class="list-group-item w-50">
+    <span class="fw-bold">District: </span>{{ customer.address.district }}
+  </li>
 </ul>
 <ul class="list-group list-group-horizontal">
   <li class="list-group-item w-75">
-    <span class="fw-bold">District: </span>{{ customer.address.district }}
+    <span class="fw-bold">City: </span>{{ customer.address.city }}
   </li>
   <li class="list-group-item w-25">
     <span class="fw-bold">State: </span>{{ customer.address.state }}
   </li>
   <li class="list-group-item w-50">
-    <span class="fw-bold">Zip Code: </span>
+    <span class="fw-bold">Zip Code: </span>{{ customer.address.zip | mask: '00.000-000' }}
   </li>
 </ul>
 
 <div class="row m-0">
-  <p class="fs-5 mt-4 text-muted">
+  <p class="fs-5 mt-4 text-muted p-0">
     <span class="material-icons align-text-sub">business</span>
     <a class="text-reset text-decoration-none m-2" href="/companies">Companies</a>
   </p>
@@ -56,12 +67,12 @@
 </div>
 
 <div class="row m-0" *ngIf="customer.companies.length > 0; else no_companies">
-  <ul class="list-group" *ngFor="let company of customer.companies">
-    <li class="list-group-item w-50">
+  <ul class="list-group w-50 p-0" *ngFor="let company of customer.companies">
+    <li class="list-group-item">
       <span class="fw-bold">Name: </span>{{ company.name }}
     </li>
-    <li class="list-group-item w-50">
-      <span class="fw-bold">CNPJ: </span>{{ company.cnpj }}
+    <li class="list-group-item">
+      <span class="fw-bold">CNPJ: </span>{{ company.cnpj | mask: '00.000.000/0000-00' }}
       <button
         type="button"
         class="btn btn-info btn-sm float-end"

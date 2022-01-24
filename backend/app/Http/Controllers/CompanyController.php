@@ -41,7 +41,7 @@ class CompanyController extends Controller
             return response(['message' => 'there was an error trying to save the company'], 500);
         }
 
-        return response($company->load('address', 'companies'), 201);
+        return response($company->load('address'), 201);
     }
 
     /**
@@ -110,7 +110,9 @@ class CompanyController extends Controller
             $company->delete();
 
             DB::commit();
-            return response(['message' => 'company deleted from the database'], 200);
+            return response([
+                'status' => true,
+                'message' => 'company deleted from the database'], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $m) {
             return response(['message' => 'company not found'], 404);
         } catch (\Exception|\Throwable $e) {

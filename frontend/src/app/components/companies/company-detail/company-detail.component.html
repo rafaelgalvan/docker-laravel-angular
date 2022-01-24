@@ -16,7 +16,7 @@
     <span class="fw-bold">Name: </span>{{ company.name }}
   </li>
   <li class="list-group-item w-50">
-    <span class="fw-bold">CNPJ: </span>{{ company.cnpj }}
+    <span class="fw-bold">CNPJ: </span>{{ company.cnpj | mask: '00.000.000/0000-00' }}
   </li>
 </ul>
 
@@ -34,25 +34,29 @@
   <li class="list-group-item w-25">
     <span class="fw-bold">Number: </span>{{ company.address.number }}
   </li>
+  <li class="list-group-item w-50">
+    <span class="fw-bold">District: </span>{{ company.address.district }}
+  </li>
 </ul>
 <ul class="list-group list-group-horizontal">
+
   <li class="list-group-item w-75">
-    <span class="fw-bold">District: </span>{{ company.address.district }}
+    <span class="fw-bold">City: </span>{{ company.address.city }}
   </li>
   <li class="list-group-item w-25">
     <span class="fw-bold">State: </span>{{ company.address.state }}
   </li>
   <li class="list-group-item w-50">
-    <span class="fw-bold">Zip Code: </span>
+    <span class="fw-bold">Zip Code: </span>{{ company.address.zip | mask: '00.000-000' }}
   </li>
 </ul>
 
-<div class="row">
-  <p class="fs-5 mt-4 w-50 text-muted">
+<div class="row m-0">
+  <p class="fs-5 mt-4 w-50 text-muted p-0">
     <span class="material-icons align-text-sub">shopping_basket</span>
     <a class="text-reset text-decoration-none m-2" href="/customers">Customers</a>
   </p>
-  <p class="fs-5 mt-4 w-50 text-muted">
+  <p class="fs-5 mt-4 w-50 text-muted p-0">
     <span class="material-icons align-text-sub">work</span>
     <a class="text-reset text-decoration-none m-2" href="/employees">Employees</a>
   </p>
@@ -91,7 +95,7 @@
         <span class="fw-bold">E-mail: </span>{{ employee.email }}
       </li>
       <li class="list-group-item">
-        <span class="fw-bold">CPF: </span>{{ employee.cpf }}
+        <span class="fw-bold">CPF: </span>{{ employee.cpf | mask: '000.000.000-00' }}
         <button
           type="button"
           class="btn btn-info btn-sm float-end"

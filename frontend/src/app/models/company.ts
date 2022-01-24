@@ -9,4 +9,5 @@ export class Company {
   address: Address = new Address();
   customers: Customer[] = [];
   employees: Employee[] = [];
+
 }

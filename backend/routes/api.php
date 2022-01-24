@@ -60,16 +60,3 @@ Route::apiResource('customers', CustomerController::class);
  *
  */
 Route::apiResource('companies', CompanyController::class);
-
-/**
- * Address API resources
- *
- * Verb          Path                          Action     Route Name
- * GET           /addresses                    index      addresses.index
- * POST          /addresses                    store      addresses.store
- * GET           /addresses/{id}               show       addresses.show
- * PUT|PATCH     /addresses/{id}               update     addresses.update
- * DELETE        /addresses/{id}               destroy    addresses.destroy
- *
- */
-Route::apiResource('addresses', AddressController::class);

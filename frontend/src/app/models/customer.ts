@@ -9,5 +9,7 @@ export class Customer {
   login: string = '';
   password: string = '';
   address: Address = new Address();
+  company: Company = new Company();
   companies: Company[] = [];
+
 }

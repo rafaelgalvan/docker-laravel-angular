@@ -10,5 +10,7 @@ export class Employee {
   password: string = '';
   address: Address = new Address();
   companies: Company[] = [];
+  company: Company = new Company();
+  file: any;
 
 }

@@ -3,29 +3,29 @@
   size = "medium" color = "#fff"
   type = "ball-clip-rotate" [fullScreen] = "true">
 </ngx-spinner>
-<form (ngSubmit)="updateEmployee()" [formGroup]="form">
+<form (ngSubmit)="insertData()" [formGroup]="form">
   <h4 class="mt-4">Personal Data</h4>
-  <div formGroupName="employee">
+  <div formGroupName="customer">
     <div class="row mt-4">
       <div class="form-group col-md-8">
         <label for="name" class="fw-bold">Name</label>
         <input id="name" type="text" name="name" formControlName="name" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && form.get('employee.name').errors }">
-        <div class="invalid-feedback" *ngIf="submitted && form.get('employee.name').errors">
-          <div *ngIf="form.get('employee.name').hasError('required')">Name is required</div>
-          <div *ngIf="form.get('employee.name').hasError('pattern')">Only letters allowed</div>
-          <div *ngIf="form.get('employee.name').hasError('maxlength')">Name must have less than 120 characters</div>
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.name').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.name').errors">
+          <div *ngIf="form.get('customer.name').hasError('required')">Name is required</div>
+          <div *ngIf="form.get('customer.name').hasError('pattern')">Only letters allowed</div>
+          <div *ngIf="form.get('customer.name').hasError('maxlength')">Name must have less than 120 characters</div>
         </div>
       </div>
       <div class="form-group col-md-4">
         <label for="cpf" class="fw-bold">CPF</label>
         <input id="cpf" type="text" name="cpf" formControlName="cpf" class="form-control"
-               mask="000.000.000-00" [ngClass]="{ 'is-invalid': submitted && form.get('employee.cpf').errors }">
-        <div class="invalid-feedback" *ngIf="submitted && form.get('employee.cpf').errors">
-          <div *ngIf="form.get('employee.cpf').hasError('required')">CPF is required</div>
-          <div *ngIf="form.get('employee.cpf').hasError('pattern')">Only numbers allowed</div>
-          <div *ngIf="form.get('employee.cpf').hasError('minlength')">CPF must have 11 characters</div>
-          <div *ngIf="form.get('employee.cpf').hasError('maxlength')">CPF must have 11 characters</div>
+               mask="000.000.000-00" [ngClass]="{ 'is-invalid': submitted && form.get('customer.cpf').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.cpf').errors">
+          <div *ngIf="form.get('customer.cpf').hasError('required')">CPF is required</div>
+          <div *ngIf="form.get('customer.cpf').hasError('pattern')">Only numbers allowed</div>
+          <div *ngIf="form.get('customer.cpf').hasError('minlength')">CPF must have 11 characters</div>
+          <div *ngIf="form.get('customer.cpf').hasError('maxlength')">CPF must have 11 characters</div>
         </div>
       </div>
 
@@ -34,32 +34,40 @@
       <div class="form-group col-md-4">
         <label for="email" class="fw-bold">E-mail</label>
         <input id="email" type="email" name="email" formControlName="email" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && form.get('employee.email').errors }">
-        <div class="invalid-feedback" *ngIf="submitted && form.get('employee.email').errors">
-          <div *ngIf="form.get('employee.email').hasError('required')">E-mail is required</div>
-          <div *ngIf="form.get('employee.email').hasError('email')">E-mail is invalid</div>
-          <div *ngIf="form.get('employee.email').hasError('maxlength')">E-mail must have less than 60 characters</div>
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.email').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.email').errors">
+          <div *ngIf="form.get('customer.email').hasError('required')">E-mail is required</div>
+          <div *ngIf="form.get('customer.email').hasError('email')">E-mail is invalid</div>
+          <div *ngIf="form.get('customer.email').hasError('maxlength')">E-mail must have less than 60 characters</div>
         </div>
       </div>
       <div class="form-group col-md-4">
         <label for="login" class="fw-bold">Login</label>
         <input id="login" type="text" name="login" formControlName="login" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && form.get('employee.login').errors }">
-        <div class="invalid-feedback" *ngIf="submitted && form.get('employee.login').errors">
-          <div *ngIf="form.get('employee.login').hasError('required')">Login is required</div>
-          <div *ngIf="form.get('employee.login').hasError('pattern')">Only numbers and letters allowed</div>
-          <div *ngIf="form.get('employee.login').hasError('maxlength')">Login must have less than 30 characters</div>
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.login').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.login').errors">
+          <div *ngIf="form.get('customer.login').hasError('required')">Login is required</div>
+          <div *ngIf="form.get('customer.login').hasError('pattern')">Only numbers and letters allowed</div>
+          <div *ngIf="form.get('customer.login').hasError('maxlength')">Login must have less than 30 characters</div>
         </div>
       </div>
       <div class="form-group col-md-4">
         <label for="password" class="fw-bold">Password</label>
         <input id="password" type="password" name="password" formControlName="password" class="form-control"
-               [ngClass]="{ 'is-invalid': submitted && form.get('employee.password').errors }">
-        <div class="invalid-feedback" *ngIf="submitted && form.get('employee.password').errors">
-          <div *ngIf="form.get('employee.password').hasError('required')">Password is required</div>
-          <div *ngIf="form.get('employee.password').hasError('maxlength')">Password must have less than 64 characters</div>
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.password').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.password').errors">
+          <div *ngIf="form.get('customer.password').hasError('required')">Password is required</div>
+          <div *ngIf="form.get('customer.password').hasError('maxlength')">Password must have less than 64 characters</div>
         </div>
       </div>
+    </div>
+  </div>
+  <div class="form-group col-md-6">
+    <label for="file" class="fw-bold">Upload Document</label>
+    <input type="file" formControlName="file" id="file" class="form-control"
+           (change)="handleFile($event)" [ngClass]="{ 'is-invalid': submitted && form.get('file').errors }">
+    <div class="invalid-feedback" *ngIf="submitted && form.get('file').errors">
+      <div *ngIf="form.get('file').hasError('required')">Please select a file</div>
     </div>
   </div>
   <h4 class="mt-4">Address</h4>
@@ -155,5 +163,30 @@
     </div>
   </div>
 
-  <button type="submit" class="btn btn-dark btn-sm mt-4">Update</button>
+  <h4 class="mt-4">Companies</h4>
+
+  <ul class="list-group w-auto">
+    <li class="list-group-item" *ngFor="let company of companies">
+      <input
+        name="{{ company.id }}"
+        class="form-check-input me-1"
+        type="checkbox"
+        value="{{ company.id }}"
+        (click)="selectCompany(company)">
+      Nome: {{ company.name }} - CNPJ: {{ company.cnpj }}
+    </li>
+  </ul>
+
+  <button
+    type="submit"
+    class="btn btn-dark btn-sm mt-4">
+    Save
+  </button>
+
+  <button
+    type="button"
+    class="btn btn-info btn-sm mx-2 mt-4"
+    routerLink="/customers">
+    List Customers
+  </button>
 </form>

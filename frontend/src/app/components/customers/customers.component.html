@@ -3,7 +3,12 @@
   size = "medium" color = "#fff"
   type = "ball-clip-rotate" [fullScreen] = "true">
 </ngx-spinner>
-<button type="button" class="btn btn-success btn-sm">Add Customer</button>
+<button
+  type="button"
+  class="btn btn-success btn-sm"
+  (click)="createCustomer()">
+  Add Customer
+</button>
 <table class="table">
   <thead>
   <tr>
@@ -20,7 +25,7 @@
     <th scope="row">{{ customer.id }}</th>
     <td>{{ customer.name }}</td>
     <td>{{ customer.email }}</td>
-    <td>{{ customer.cpf }}</td>
+    <td>{{ customer.cpf | mask: '000.000.000-00' }}</td>
     <td>{{ customer.login }}</td>
     <td>
       <button
@@ -45,3 +50,7 @@
   </tr>
   </tbody>
 </table>
+
+<div *ngIf="customers.length < 1;">
+  <p>There are no registered customers till this moment.</p>
+</div>

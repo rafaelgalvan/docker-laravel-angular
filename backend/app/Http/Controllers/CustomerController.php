@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Service\GenericService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\DB;
@@ -31,17 +32,39 @@ class CustomerController extends Controller
         try {
             DB::beginTransaction();
 
-            $customer = Customer::create($request->input("customer"));
-            $customer->address()->create($request->input("address"));
-            $customer->companies()->attach($request->input("company"));
+            if ($request->getContentType() == 'form') {
+                $customer = new Customer();
+                if ($request->has('json')) {
+                    $data = json_decode($request->get('json'), true);
+                    $customer = Customer::create($data['customer']);
+                    $customer->address()->create($data['address']);
+                    $companies = $data['companies'];
+                    foreach ($companies as $company) {
+                        $customer->companies()->attach($company['id']);
+                    }
+                }
+
+                if ($request->hasFile('file')) {
+                    $fileController = new FileController();
+                    $file = $fileController->handleFile($request);
+                    $customer->file()->save($file);
+                }
+            } else {
+                $customer = Customer::create($request->input('customer'));
+                $customer->address()->create($request->input('address'));
+                $companies = $request->input('companies');
+                foreach ($companies as $company) {
+                    $customer->companies()->attach($company['id']);
+                }
+            }
 
             DB::commit();
         } catch (\Exception|\Throwable $e) {
             DB::rollback();
-            return response(['message' => 'there was an error trying to save the customer'], 500);
+            return response(['message' => 'there was an error trying to save the customer.'], 500);
         }
 
-        return response($customer->load('address', 'companies'), 201);
+        return response($customer->load('address', 'companies', 'file'), 201);
     }
 
     /**
@@ -53,7 +76,7 @@ class CustomerController extends Controller
     public function show(int $id)
     {
         try {
-            return response(Customer::with('address', 'companies')->findOrFail($id));
+            return response(Customer::with('address', 'companies.address')->findOrFail($id));
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $m) {
             return response(['message' => 'customer not found'], 404);
         }
@@ -101,13 +124,13 @@ class CustomerController extends Controller
             DB::beginTransaction();
 
             $customer = Customer::findOrFail($id);
-            $customer->companies()->detach();
-            $customer->address()->delete();
-
-            $customer->delete();
+            $service = New GenericService();
+            $service->delete($customer);
 
             DB::commit();
-            return response(['message' => 'customer deleted from the database'], 200);
+            return response([
+                'status' => true,
+                'message' => 'customer deleted from the database'], 200);
         } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $m) {
             return response(['message' => 'customer not found'], 404);
         } catch (\Exception|\Throwable $e) {

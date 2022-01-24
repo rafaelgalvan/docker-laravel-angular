@@ -3,85 +3,157 @@
   size = "medium" color = "#fff"
   type = "ball-clip-rotate" [fullScreen] = "true">
 </ngx-spinner>
-<form>
+<form (ngSubmit)="updateCustomer()" [formGroup]="form">
   <h4 class="mt-4">Personal Data</h4>
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label for="name" class="fw-bold">Name</label>
-      <input id="name" type="text" name="name" class="form-control" [(ngModel)]="customer.name">
+  <div formGroupName="customer">
+    <div class="row mt-4">
+      <div class="form-group col-md-8">
+        <label for="name" class="fw-bold">Name</label>
+        <input id="name" type="text" name="name" formControlName="name" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.name').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.name').errors">
+          <div *ngIf="form.get('customer.name').hasError('required')">Name is required</div>
+          <div *ngIf="form.get('customer.name').hasError('pattern')">Only letters allowed</div>
+          <div *ngIf="form.get('customer.name').hasError('maxlength')">Name must have less than 120 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="cpf" class="fw-bold">CPF</label>
+        <input id="cpf" type="text" name="cpf" formControlName="cpf" class="form-control"
+               mask="000.000.000-00" [ngClass]="{ 'is-invalid': submitted && form.get('customer.cpf').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.cpf').errors">
+          <div *ngIf="form.get('customer.cpf').hasError('required')">CPF is required</div>
+          <div *ngIf="form.get('customer.cpf').hasError('pattern')">Only numbers allowed</div>
+          <div *ngIf="form.get('customer.cpf').hasError('minlength')">CPF must have 11 characters</div>
+          <div *ngIf="form.get('customer.cpf').hasError('maxlength')">CPF must have 11 characters</div>
+        </div>
+      </div>
+
     </div>
-    <div class="form-group col-md-6">
-      <label for="cpf" class="fw-bold">CPF</label>
-      <input id="cpf" type="text" name="cpf" class="form-control" [(ngModel)]="customer.cpf">
-    </div>
-  </div>
-  <div class="row">
-    <div class="form-group col-md-4">
-      <label for="email" class="fw-bold">Email</label>
-      <input id="email" type="email" name="email" class="form-control" [(ngModel)]="customer.email">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="login" class="fw-bold">Login</label>
-      <input id="login" type="text" name="login" class="form-control" [(ngModel)]="customer.login">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="password" class="fw-bold">Password</label>
-      <input id="password" type="password" name="password" class="form-control" [(ngModel)]="customer.password">
+    <div class="row">
+      <div class="form-group col-md-4">
+        <label for="email" class="fw-bold">E-mail</label>
+        <input id="email" type="email" name="email" formControlName="email" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.email').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.email').errors">
+          <div *ngIf="form.get('customer.email').hasError('required')">E-mail is required</div>
+          <div *ngIf="form.get('customer.email').hasError('email')">E-mail is invalid</div>
+          <div *ngIf="form.get('customer.email').hasError('maxlength')">E-mail must have less than 60 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="login" class="fw-bold">Login</label>
+        <input id="login" type="text" name="login" formControlName="login" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.login').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.login').errors">
+          <div *ngIf="form.get('customer.login').hasError('required')">Login is required</div>
+          <div *ngIf="form.get('customer.login').hasError('pattern')">Only numbers and letters allowed</div>
+          <div *ngIf="form.get('customer.login').hasError('maxlength')">Login must have less than 30 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="password" class="fw-bold">Password</label>
+        <input id="password" type="password" name="password" formControlName="password" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && form.get('customer.password').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('customer.password').errors">
+          <div *ngIf="form.get('customer.password').hasError('required')">Password is required</div>
+          <div *ngIf="form.get('customer.password').hasError('maxlength')">Password must have less than 64 characters</div>
+        </div>
+      </div>
     </div>
   </div>
   <h4 class="mt-4">Address</h4>
-  <div class="row">
-    <div class="form-group col-md-9">
-      <label for="street" class="fw-bold">Street</label>
-      <input type="text" class="form-control" name="street" id="street" [(ngModel)]="customer.address.street">
+  <div formGroupName="address">
+    <div class="row">
+      <div class="form-group col-md-9">
+        <label for="street" class="fw-bold">Street</label>
+        <input type="text" class="form-control" name="street" formControlName="street" id="street"
+               [ngClass]="{ 'is-invalid': submitted && form.get('address.street').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('address.street').errors">
+          <div *ngIf="form.get('address.street').hasError('required')">Street is required</div>
+          <div *ngIf="form.get('address.street').hasError('maxlength')">Street must have less than 100 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="number" class="fw-bold">Number</label>
+        <input type="text" class="form-control" name="number" formControlName="number" id="number"
+               [ngClass]="{ 'is-invalid': submitted && form.get('address.number').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('address.number').errors">
+          <div *ngIf="form.get('address.number').hasError('required')">Number is required</div>
+          <div *ngIf="form.get('address.number').hasError('pattern')">Only numbers and letters allowed</div>
+          <div *ngIf="form.get('address.number').hasError('maxlength')">Number must have less than 20 characters</div>
+        </div>
+      </div>
     </div>
-    <div class="form-group col-md-3">
-      <label for="number" class="fw-bold">Number</label>
-      <input type="text" class="form-control" name="number" id="number" [(ngModel)]="customer.address.number">
+    <div class="row">
+      <div class="form-group col-md-3">
+        <label for="district" class="fw-bold">District</label>
+        <input type="text" class="form-control" name="district" formControlName="district" id="district"
+               [ngClass]="{ 'is-invalid': submitted && form.get('address.district').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('address.district').errors">
+          <div *ngIf="form.get('address.district').hasError('required')">District is required</div>
+          <div *ngIf="form.get('address.district').hasError('maxlength')">District must have less than 100 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-4">
+        <label for="city" class="fw-bold">City</label>
+        <input type="text" class="form-control" name="city" formControlName="city" id="city"
+               [ngClass]="{ 'is-invalid': submitted && form.get('address.city').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('address.city').errors">
+          <div *ngIf="form.get('address.city').hasError('required')">City is required</div>
+          <div *ngIf="form.get('address.city').hasError('maxlength')">City must have less than 100 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-3">
+        <label for="state" class="fw-bold">State</label>
+        <select id="state" class="form-control" formControlName="state" name="state"
+                [ngClass]="{ 'is-invalid': submitted && form.get('address.state').errors }">
+          <option value="null" selected>Choose...</option>
+          <option value="AC">Acre</option>
+          <option value="AL">Alagoas</option>
+          <option value="AP">Amapá</option>
+          <option value="AM">Amazonas</option>
+          <option value="BA">Bahia</option>
+          <option value="CE">Ceará</option>
+          <option value="DF">Distrito Federal</option>
+          <option value="ES">Espírito Santo</option>
+          <option value="GO">Goiás</option>
+          <option value="MA">Maranhão</option>
+          <option value="MT">Mato Grosso</option>
+          <option value="MS">Mato Grosso do Sul</option>
+          <option value="MG">Minas Gerais</option>
+          <option value="PA">Pará</option>
+          <option value="PB">Paraíba</option>
+          <option value="PR">Paraná</option>
+          <option value="PE">Pernambuco</option>
+          <option value="PI">Piauí</option>
+          <option value="RJ">Rio de Janeiro</option>
+          <option value="RN">Rio Grande do Norte</option>
+          <option value="RS">Rio Grande do Sul</option>
+          <option value="RO">Rondônia</option>
+          <option value="RR">Roraima</option>
+          <option value="SC">Santa Catarina</option>
+          <option value="SP">São Paulo</option>
+          <option value="SE">Sergipe</option>
+          <option value="TO">Tocantins</option>
+        </select>
+        <div class="invalid-feedback" *ngIf="submitted && form.get('address.state').errors">
+          <div *ngIf="form.get('address.state').hasError('required')">State is required</div>
+          <div *ngIf="form.get('address.state').hasError('maxlength')">State must have 2 characters</div>
+        </div>
+      </div>
+      <div class="form-group col-md-2">
+        <label for="zip" class="fw-bold">Zip Code</label>
+        <input type="text" class="form-control" id="zip" formControlName="zip"
+               mask="00.000-000" [ngClass]="{ 'is-invalid': submitted && form.get('address.zip').errors }">
+        <div class="invalid-feedback" *ngIf="submitted && form.get('address.zip').errors">
+          <div *ngIf="form.get('address.zip').hasError('required')">Zip code is required</div>
+          <div *ngIf="form.get('address.zip').hasError('minlength')">Zip must have 8 characters</div>
+          <div *ngIf="form.get('address.zip').hasError('maxlength')">Zip must have 8 characters</div>
+        </div>
+      </div>
     </div>
   </div>
-  <div class="row">
-    <div class="form-group col-md-6">
-      <label for="city" class="fw-bold">City</label>
-      <input type="text" class="form-control" name="city" id="city" [(ngModel)]="customer.address.city">
-    </div>
-    <div class="form-group col-md-4">
-      <label for="state" class="fw-bold">State</label>
-      <select id="state" class="form-control" name="state" [(ngModel)]="customer.address.state" >
-        <option selected>Choose...</option>
-        <option value="AC">Acre</option>
-        <option value="AL">Alagoas</option>
-        <option value="AP">Amapá</option>
-        <option value="AM">Amazonas</option>
-        <option value="BA">Bahia</option>
-        <option value="CE">Ceará</option>
-        <option value="DF">Distrito Federal</option>
-        <option value="ES">Espírito Santo</option>
-        <option value="GO">Goiás</option>
-        <option value="MA">Maranhão</option>
-        <option value="MT">Mato Grosso</option>
-        <option value="MS">Mato Grosso do Sul</option>
-        <option value="MG">Minas Gerais</option>
-        <option value="PA">Pará</option>
-        <option value="PB">Paraíba</option>
-        <option value="PR">Paraná</option>
-        <option value="PE">Pernambuco</option>
-        <option value="PI">Piauí</option>
-        <option value="RJ">Rio de Janeiro</option>
-        <option value="RN">Rio Grande do Norte</option>
-        <option value="RS">Rio Grande do Sul</option>
-        <option value="RO">Rondônia</option>
-        <option value="RR">Roraima</option>
-        <option value="SC">Santa Catarina</option>
-        <option value="SP">São Paulo</option>
-        <option value="SE">Sergipe</option>
-        <option value="TO">Tocantins</option>
-      </select>
-    </div>
-    <div class="form-group col-md-2">
-      <label for="zip" class="fw-bold">Zip Code</label>
-      <input type="text" class="form-control" id="zip" name="zip">
-    </div>
-  </div>
-  <button class="btn btn-dark btn-sm mt-4">Update</button>
+
+  <button type="submit" class="btn btn-dark btn-sm mt-4">Update</button>
 </form>

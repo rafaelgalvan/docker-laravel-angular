@@ -10,7 +10,7 @@ class Address extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['street', 'number', 'district', 'city', 'state'];
+    protected $fillable = ['street', 'number', 'district', 'city', 'state', 'zip'];
     protected $table = 'addresses';
 
     public function addressable(): MorphTo

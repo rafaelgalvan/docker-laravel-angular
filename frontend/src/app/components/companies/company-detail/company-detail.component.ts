@@ -29,7 +29,10 @@ export class CompanyDetailComponent implements OnInit {
     this.dataService.getById('companies', this.id).subscribe((res:any) => {
       this.company = res;
       this.spinner.hide();
-    })
+    });
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 10000);
   }
 
 }
