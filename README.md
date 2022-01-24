@@ -1,78 +1,47 @@
 
-# Setup Docker Para Projetos Laravel
+# Angular, Laravel, Docker, Redis, Mysql
 
 ### Passo a passo
-Clone Repositório
+1. Clone Repositório
 ```sh
 git clone https://github.com/rafaelgalvan/docker-laravel-angular.git my-project
+```
+
+2. Navegar até a pasta do projeto:
+```sh
 cd my-project/
 ```
 
-
-Alterne para a branch laravel 8.x
-```sh
-git checkout laravel-8
-```
-
-
-Remova o versionamento
-```sh
-rm -rf .git/
-```
-
-
-Crie o Arquivo .env
-```sh
-cd example-project/
-cp .env.example .env
-```
-
-
-Atualize as variáveis de ambiente do arquivo .env
-```dosini
-APP_NAME=backend-laravel
-APP_URL=http://localhost:8000
-
-DB_CONNECTION=mysql
-DB_HOST=mysql
-DB_PORT=3306
-DB_DATABASE=nome_que_desejar_db
-DB_USERNAME=root
-DB_PASSWORD=root
-
-CACHE_DRIVER=redis
-QUEUE_CONNECTION=redis
-SESSION_DRIVER=redis
-
-REDIS_HOST=redis
-REDIS_PASSWORD=null
-REDIS_PORT=6379
-```
-
-
-Suba os containers do projeto
+3. Iniciar os containers:
 ```sh
 docker-compose up -d
 ```
+caso não queira usar a flag “-d”, abra um novo terminal para prosseguir. O container Angular pode levar até 2 minutos pra iniciar devido a compilação.
+Baixar todos os containers e compilar pode levar um tempo. Aguarde os containers subir para prosseguir para o passo 4.
 
 
-Acessar o container
+4. Rodar um comando para gerar os arquivos de autoload no laravel com composer:
+```sh
+docker container exec laravel composer install
+```
+6. Rodar um comando para gerar as tabelas no banco de dados. As tabelas serão criadas sem nenhum registro:
+```sh
+docker container exec laravel php artisan migrate
+```
+
+Após executar os passos acima a aplicação está pronta para ser acessada nos links abaixo:
+
+Backend: [http://localhost:8000](http://localhost:8000)
+
+Frontend: [http://localhost:4200](http://localhost:4200)
+
+Caso queira acessar um container isolado, execute:
 ```sh
 docker-compose exec laravel_8 bash
 ```
-
-
-Instalar as dependências do projeto
 ```sh
-composer install
+docker-compose exec angular_13 bash
 ```
-
-
-Gerar a key do projeto Laravel
 ```sh
-php artisan key:generate
+docker-compose exec mysql bash
 ```
-
-
-Acesse o projeto
-[http://localhost:8000](http://localhost:8000)
